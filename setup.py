@@ -87,5 +87,7 @@ setup(
         'console_scripts': ['imgur-shot=imgurshot.__main__:main'],
     },
 
+    packages=['imgurshot'],
+    include_package_data=True,
     install_requires=install_requires
 )

@@ -3,7 +3,7 @@ A simple app to help you __taking__ screenshots.
 __imgur-shot__ takes a screenshot, __uploads__ it to imgur --and shows notification with a link to the image-- (@TODO).
 # Installation
 ```
-./setup.py develop
+./setup.py install
 ```
 Currently __imgur-shot__ supports __Python 2__ only (this should change in some days).
 # Running
