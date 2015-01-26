@@ -5,8 +5,8 @@ Screenshoter module
 """
 
 import os
-import pyscreenshot as ImageGrab
 import pyimgur
+import subprocess
 
 from time import time
 from hashlib import sha1
@@ -25,18 +25,20 @@ class Screenshooter:
             os.makedirs(self.__save_dir)
 
     def grab(self):
-        """Take a screenshot and saves it to $HOME/.imgur-screenshopter.
+        """Take a screenshot and saves it to $HOME/.imgur-screenshooter.
 
         :return path to the saved image.
         """
-        image = ImageGrab.grab()
         filename_hash = sha1()
-        filename_hash.update(str(time()))
-        save_path = '{save_dir}/{hash}.jpg'.format(
+        filename_hash.update(str(time()).encode('utf-8'))
+        save_path = '{save_dir}/{hash}.png'.format(
             save_dir=self.__save_dir,
             hash=filename_hash.hexdigest()[:10]
         )
-        image.save(save_path)
+
+        # Take a screenshot
+        # TODO: Provide more control: selecting the area, window, etc (e.g, scrot -s)
+        subprocess.call(['scrot', save_path])
 
         return save_path
 

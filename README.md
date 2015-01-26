@@ -1,17 +1,21 @@
 # imgur-shot
 A simple app to help you __taking__ screenshots.
 __imgur-shot__ takes a screenshot, __uploads__ it to imgur --and shows notification with a link to the image-- (@TODO).
-# Installation
+## Requirements
+* scrot
+### Debian Quickstart
+```
+apt-get install scrot
+## Installation
 ```
 ./setup.py install
 ```
-Currently __imgur-shot__ supports __Python 2__ only (this should change in some days).
-# Running
+## Running
 To take a screenshot run
 ```
 imgur-shot
 ```
-# License
+## License
 The MIT License (MIT)
 
 Copyright (c) 2015 Michal Proszek
