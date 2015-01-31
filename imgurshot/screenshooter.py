@@ -58,7 +58,6 @@ class Screenshooter:
             return False
 
         uploaded_img = self._upload(img_path)
-
         self.__show_message(
             title="Uploaded",
             message=uploaded_img.link,
