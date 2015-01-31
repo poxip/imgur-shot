@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 imgur-shot
 ======================================
@@ -97,8 +97,11 @@ setup(
         "Intended Audience :: Developers",
         "Intended Audience :: Information Technology",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.3",
-        "Programming Language :: Python :: 3.4"
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
     ],
 
     packages=find_packages(exclude=['tests']),

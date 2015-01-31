@@ -4,7 +4,6 @@ Tests for Screenshooter class.
 """
 
 import unittest
-import pyimgur
 import imgurshot
 
 class TestScreenshooter(unittest.TestCase):
