@@ -3,6 +3,7 @@ A simple app to help you __taking__ screenshots.
 __imgur-shot__ takes a screenshot, __uploads__ it to imgur --and shows notification with a link to the image-- (@TODO).
 ## Requirements
 * scrot
+
 ### Debian Quickstart
 ```
 apt-get install scrot
