@@ -44,7 +44,7 @@ class Screenshooter:
         # Initialize libnotify
         Gtk.init()
         if not Notify.init(imgurshot.__appname__):
-            self.__show_message("error", "Unable to initialize libnotify")
+            self.__show_message("error", "unable to initialize libnotify")
 
     def take(self, type='screen'):
         """Take a screenshot, upload it to imgur and
@@ -52,8 +52,13 @@ class Screenshooter:
 
         :param type Determines screenshot type, use 'select' to take
                     a screenshot of selected area/window (scrot --select)
+
+        :return True if everything was successful, otherwise False
         """
         img_path = self._grab(type)
+        if not img_path:
+            return False
+
         uploaded_img = self._upload(img_path)
 
         self.__show_message(
@@ -68,14 +73,16 @@ class Screenshooter:
             ]
         )
 
+        return True
+
     def _grab(self, screenshot_type):
         """Take a screenshot and save it to $HOME/.imgur-screenshooter.
 
         :param type Determines screenshot type, use 'select' to take
                     a screenshot of selected area/window (scrot --select)
-        :return path to the saved image
+        :return path to the saved image or None if nothing was grabbed
         """
-        self.__show_message("Taking a screenshot..")
+        self.__show_message("_grab", "taking a screenshot..")
 
         filename_hash = sha1()
         filename_hash.update(str(time()).encode('utf-8'))
@@ -93,7 +100,13 @@ class Screenshooter:
         if screenshot_select:
             scrot_command += screenshot_select
 
-        subprocess.call(scrot_command)
+        result = subprocess.call(scrot_command)
+        if result is not 0:
+            self.__show_message("__grab", "scrot error occurred")
+            if result is 2:
+                self.__show_message("_grab", "no area selected")
+
+            return
 
         return save_path
 
@@ -123,7 +136,7 @@ class Screenshooter:
                        containing all actions to be added to the notification.
                        :note type must be 'notification'
         """
-        print("imgur-shot: {title} {message}".format(**locals()))
+        print("[imgur-shot]: {title}: {message}".format(**locals()))
         if message_type is not 'debug':
             notification = Notify.Notification.new(
                 title, message, icon
