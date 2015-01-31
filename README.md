@@ -6,6 +6,7 @@ __imgur-shot__ takes a screenshot, __uploads__ it to imgur --and shows notificat
 ### Debian Quickstart
 ```
 apt-get install scrot
+```
 ## Installation
 ```
 ./setup.py install
