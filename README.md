@@ -3,17 +3,20 @@ A simple app to help you __taking__ screenshots.
 __imgur-shot__ takes a screenshot, __uploads__ it to imgur --and shows notification with a link to the image-- (@TODO).
 ## Requirements
 * scrot
+* libnotify-dev
+* libgtk-3-dev
+* python-gobject
 
 ### Debian Quickstart
 ```
-apt-get install scrot
+apt-get install scrot libnotify-dev libgtk-3-dev python-gobject
 ```
 ## Installation
 ```
 ./setup.py install
 ```
 ## Running
-To take a screenshot run
+To take a screenshot execute:
 ```
 imgur-shot
 ```
