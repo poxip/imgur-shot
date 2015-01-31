@@ -1,5 +1,5 @@
 """
-Screenshoter module
+Screenshooter module
 """
 
 import os
