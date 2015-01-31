@@ -11,3 +11,4 @@ install:
   - pip install -e .
   - pip install -r requirements-test.txt
 script: py.test
+sudo: true
