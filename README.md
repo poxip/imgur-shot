@@ -1,6 +1,7 @@
 # imgur-shot
-A simple app to help you __taking__ screenshots.
-__imgur-shot__ takes a screenshot, __uploads__ it to imgur --and shows notification with a link to the image-- (@TODO).
+A simple app to help you taking screenshots.
+
+__imgur-shot__ takes a screenshot using scrot and __uploads__ it to imgur.
 ## Requirements
 * scrot
 * libnotify-dev
@@ -16,9 +17,13 @@ apt-get install scrot libnotify-dev libgtk-3-dev python-gobject
 ./setup.py install
 ```
 ## Running
-To take a screenshot execute:
+To take a screenshot __of whole screen__ execute:
 ```
 imgur-shot
+```
+use flag __--select__ to select a window or an area
+```
+imgur-shot --select
 ```
 ## License
 The MIT License (MIT)
