@@ -3,12 +3,15 @@
 imgur-shot
 ======================================
 
-imgur-shot is a simple screenshoter that upload the screenshot to imgur.com
+A screenshot tool made for rapid screnshots sharing.
 """
 import ast
 import os
 from setuptools import find_packages, setup
 import sys
+
+
+# Utility functions
 
 def read_tags(filename):
     """Reads values of "magic tags" defined in the given Python file.
@@ -69,25 +72,44 @@ def read_requirements(filename='requirements.txt'):
 
 # setup() call
 
-install_requires = read_requirements()
+PROJECT = 'imgurshot'
+APP_EXEC = 'imgur-shot'
 
-tags = read_tags(os.path.join('imgurshot', '__init__.py'))
+install_requires = read_requirements()
+if sys.version_info < (3, 4):
+    install_requires.extend(read_requirements('py33'))
+
+tags = read_tags(os.path.join(PROJECT, '__init__.py'))
 __doc__ = __doc__.format(**tags)
 
 setup(
-    name='imgur-shot',
+    name=PROJECT,
     version=tags['version'],
     description=tags['description'],
     long_description=__doc__,
     author=tags['author'],
-    url="https://github.com/poxip/imgur-shot",
+    url="http://github.com/%s/%s" % (tags['author'], PROJECT),
     license=tags['license'],
 
+    platforms='all',
+    classifiers=[
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Information Technology",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+    ],
+
+    packages=find_packages(exclude=['tests']),
+    zip_safe=False,
     entry_points={
-        'console_scripts': ['imgur-shot=imgurshot.__main__:main'],
+        'console_scripts': ['%s=%s.__main__:main' % (APP_EXEC, PROJECT)],
     },
 
-    packages=['imgurshot'],
-    include_package_data=True,
-    install_requires=install_requires
+    install_requires=install_requires,
+    tests_require=read_requirements('test'),
 )

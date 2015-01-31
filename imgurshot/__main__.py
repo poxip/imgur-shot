@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-'''
-Created on 25 Jan, 2015
-
+"""
 Main module of imgur-shot application.
-'''
+"""
 
 import sys
 import argparse
