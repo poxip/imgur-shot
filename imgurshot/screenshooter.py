@@ -43,24 +43,36 @@ class Screenshooter:
 
         # Initialize libnotify
         Gtk.init()
-        Notify.init(imgurshot.__appname__)
+        if not Notify.init(imgurshot.__appname__):
+            self.__show_message("error", "Unable to initialize libnotify")
 
-    def take(self):
+    def take(self, type='screen'):
         """Take a screenshot, upload it to imgur and
-        show a notification about the results"""
-        img_path = self._grab()
+        show a notification about the results
+
+        :param type Determines screenshot type, use 'select' to take
+                    a screenshot of selected area/window (scrot --select)
+        """
+        img_path = self._grab(type)
         uploaded_img = self._upload(img_path)
 
         self.__show_message(
-            "Uploaded", uploaded_img.link, 'notification',
-            actions=[NotifyAction(
-                'copy-to-clipboard', "Copy", self.__on_notify_copytoclipboard
-            )]
+            title="Uploaded",
+            message=uploaded_img.link,
+            message_type='notification',
+            is_main=True,
+            actions=[
+                NotifyAction(
+                    'copy-to-clipboard', "Copy", self.__on_notification_copytoclipboard
+                )
+            ]
         )
 
-    def _grab(self):
+    def _grab(self, screenshot_type):
         """Take a screenshot and save it to $HOME/.imgur-screenshooter.
 
+        :param type Determines screenshot type, use 'select' to take
+                    a screenshot of selected area/window (scrot --select)
         :return path to the saved image
         """
         self.__show_message("Taking a screenshot..")
@@ -73,8 +85,15 @@ class Screenshooter:
         )
 
         # Take a screenshot
-        # TODO: Provide more control: selecting the area, window, etc (e.g, scrot -s)
-        subprocess.call(['scrot', save_path])
+        screenshot_select = [
+            '--select', '--border'
+        ] if screenshot_type is 'select' else []
+
+        scrot_command = ['scrot', save_path]
+        if screenshot_select:
+            scrot_command += screenshot_select
+
+        subprocess.call(scrot_command)
 
         return save_path
 
@@ -89,8 +108,8 @@ class Screenshooter:
             image_path, title="Uploaded with imgur-shot tool"
         )
 
-    def __show_message(self, title, message="", type='debug',
-                       icon='dialog-information', actions=[]):
+    def __show_message(self, title, message="", message_type='debug',
+                       icon='dialog-information', is_main=False, actions=[]):
         """Inform user about what's going on right now.
 
         :param title A message title
@@ -98,12 +117,14 @@ class Screenshooter:
         :param type Describes what type of message it is,
                     i.e., 'debug' or 'notification'
         :param icon The name of icon to be displayed in the notification
+        :param is_main Determines if the app should be exited on notification's
+                       closed callback
         :param actions A list of :class NotifyAction
                        containing all actions to be added to the notification.
                        :note type must be 'notification'
         """
         print("imgur-shot: {title} {message}".format(**locals()))
-        if type is not 'debug':
+        if message_type is not 'debug':
             notification = Notify.Notification.new(
                 title, message, icon
             )
@@ -112,15 +133,27 @@ class Screenshooter:
                     action.name, action.text, action.callback
                 )
 
+            if is_main:
+                notification.connect(
+                    'closed', self.__on_mainnotification_closed
+                )
+
             notification.show()
-            # An ugly hack to make actions working
+            # Wait for any action
+            # what if user clicked on the link? -- the program will be still running
+            # (no idea at the moment, how to avoid this)
             if actions:
                 Gtk.main()
 
     # Callbacks
-    def __on_notify_copytoclipboard(self, notification, action, user_data):
+    def __on_mainnotification_closed(self, notification):
+        """When the last notification is closed, quit."""
+        if Notify.is_initted():
+            Notify.uninit()
+
+        Gtk.main_quit()
+
+    def __on_notification_copytoclipboard(self, notification, action, user_data):
         clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
         clipboard.set_text(notification.props.body, -1)
         self.__show_message(notification.props.body, "Copied to the clipboard")
-
-        Gtk.main_quit()
