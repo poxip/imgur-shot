@@ -4,13 +4,15 @@ Tests for Screenshooter class.
 """
 
 import unittest
+
 from imgurshot import client
+
 
 class TestClient(unittest.TestCase):
 
     def setUp(self):
         self.imgur_app_id = '424c87cf63c1515'
-        self.image_path = 'images/tuxedo-cat.jpg'
+        self.image_path = 'tests/images/tuxedo-cat.jpg'
 
         self.client = client.Client(self.imgur_app_id)
 
