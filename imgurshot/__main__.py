@@ -5,10 +5,12 @@ Main module of imgur-shot application.
 
 import sys
 import argparse
-import imgurshot
+
+from imgurshot import __description__
+from imgurshot.guiclient import GuiClient
 
 def main():
-    parser = argparse.ArgumentParser(description=imgurshot.__description__)
+    parser = argparse.ArgumentParser(description=__description__)
     parser.add_argument(
         '--select',
         action='store_true',
@@ -16,7 +18,7 @@ def main():
     )
     args = parser.parse_args()
 
-    client = imgurshot.GuiClient(CLIENT_ID)
+    client = GuiClient(CLIENT_ID)
     client.take('select' if args.select else 'screen')
 
 CLIENT_ID = '424c87cf63c1515'
