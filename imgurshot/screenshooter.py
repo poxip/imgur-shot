@@ -159,7 +159,8 @@ class GuiClient(Client):
             is_main=True,
             actions=[
                 NotifyAction(
-                    'copy-to-clipboard', "Copy", self.__on_notification_copytoclipboard
+                    'copy-to-clipboard', "Copy",
+                    self.__on_notification_copytoclipboard
                 )
             ]
         )
@@ -197,10 +198,14 @@ class GuiClient(Client):
 
             notification.show()
             # Wait for any action
-            # what if user clicked on the link? -- the program will be still running
+            # what if user clicked on the link?
+            # -- the program will be still running
             # (no idea at the moment, how to avoid this)
             if actions:
                 Gtk.main()
+
+        else:
+            Client._show_message(self, title, message)
 
     # Callbacks
     def __on_mainnotification_closed(self, notification):
@@ -210,7 +215,9 @@ class GuiClient(Client):
 
         Gtk.main_quit()
 
-    def __on_notification_copytoclipboard(self, notification, action, user_data):
+    def __on_notification_copytoclipboard(self, notification, *args):
         clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
         clipboard.set_text(notification.props.body, -1)
-        Client._show_message(self, notification.props.body, "Copied to the clipboard")
+        Client._show_message(
+            self, notification.props.body, "Copied to the clipboard"
+        )
