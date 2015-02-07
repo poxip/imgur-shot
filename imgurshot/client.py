@@ -4,11 +4,10 @@ Screenshooter module
 
 import os
 import subprocess
-from time import time
-from hashlib import sha1
-
 import pyimgur
 
+from time import time
+from hashlib import sha1
 
 class Client:
     """Base client for imgur-shot"""
