@@ -1,4 +1,4 @@
-# imgur-shot
+# imgur-shot [![Build Status](https://travis-ci.org/poxip/imgur-shot.svg?branch=master)](https://travis-ci.org/poxip/imgur-shot)
 A simple app made for rapid screenshots sharing.
 
 __imgur-shot__ takes a screenshot using scrot and __uploads__ it to imgur.
