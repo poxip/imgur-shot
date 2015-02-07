@@ -16,7 +16,7 @@ def main():
     )
     args = parser.parse_args()
 
-    client = imgurshot.Screenshooter(CLIENT_ID)
+    client = imgurshot.GuiClient(CLIENT_ID)
     client.take('select' if args.select else 'screen')
 
 CLIENT_ID = '424c87cf63c1515'

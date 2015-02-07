@@ -14,6 +14,7 @@ from gi.repository import Gtk, Gdk
 
 class NotifyAction:
     """An notify action data carrier"""
+
     def __init__(self, name, text, callback):
         """Init the Action field with specified action name, text and callback.
 
@@ -25,7 +26,9 @@ class NotifyAction:
         self.text = text
         self.callback = callback
 
-class Screenshooter:
+class Client:
+    """Base client for imgur-shot"""
+
     def __init__(self, app_id):
         """Init the client with given imgur application id.
 
@@ -39,38 +42,27 @@ class Screenshooter:
         if not os.path.exists(self.__save_dir):
             os.makedirs(self.__save_dir)
 
-        # Initialize libnotify
-        Gtk.init()
-        if not Notify.init(imgurshot.__appname__):
-            self.__show_message("error", "unable to initialize libnotify")
-
     def take(self, type='screen'):
         """Take a screenshot, upload it to imgur and
-        show a notification about the results
+        inform about the results.
 
         :param type Determines screenshot type, use 'select' to take
                     a screenshot of selected area/window (scrot --select)
 
-        :return True if everything was successful, otherwise False
+        :return url to the saved image if everything went successful,
+                otherwise None
         """
         img_path = self._grab(type)
         if not img_path:
-            return False
+            return
 
         uploaded_img = self._upload(img_path)
-        self.__show_message(
+        self._show_message(
             title="Uploaded",
-            message=uploaded_img.link,
-            message_type='notification',
-            is_main=True,
-            actions=[
-                NotifyAction(
-                    'copy-to-clipboard', "Copy", self.__on_notification_copytoclipboard
-                )
-            ]
+            message=uploaded_img.link
         )
 
-        return True
+        return uploaded_img.link
 
     def _grab(self, screenshot_type):
         """Take a screenshot and save it to $HOME/.imgur-screenshooter.
@@ -79,7 +71,7 @@ class Screenshooter:
                     a screenshot of selected area/window (scrot --select)
         :return path to the saved image or None if nothing was grabbed
         """
-        self.__show_message("_grab", "taking a screenshot..")
+        self._show_message("_grab", "taking a screenshot..")
 
         filename_hash = sha1()
         filename_hash.update(str(time()).encode('utf-8'))
@@ -99,9 +91,9 @@ class Screenshooter:
 
         result = subprocess.call(scrot_command)
         if result is not 0:
-            self.__show_message("__grab", "scrot error occurred")
+            self._show_message("__grab", "scrot error occurred")
             if result is 2:
-                self.__show_message("_grab", "no area selected")
+                self._show_message("_grab", "no area selected")
 
             return
 
@@ -113,13 +105,69 @@ class Screenshooter:
         :param image_path A path to the image to be uploaded
         :return uploaded image data
         """
-        self.__show_message("Uploading..", "", 'notification')
+        self._show_message("Uploading..", "")
         return self.__imgur.upload_image(
             image_path, title="Uploaded with imgur-shot tool"
         )
 
-    def __show_message(self, title, message="", message_type='debug',
-                       icon='dialog-information', is_main=False, actions=[]):
+    def _show_message(self, title, message=""):
+        """Inform user about what's going on right now.
+
+        By default messages are logged to stdout.
+
+        :param title A message title
+        :param message A message to show
+        """
+        print("[imgur-shot]: {title}: {message}".format(
+            title=title,
+            message=message
+        ))
+
+class GuiClient(Client):
+    """The GUI Client implementing all GUI features, e.g. notifications."""
+
+    def __init__(self, app_id):
+        """Init the client with given imgur application id.
+
+        :param app_id imgur application id
+        """
+        Client.__init__(self, app_id)
+
+        # Initialize libnotify
+        Gtk.init()
+        if not Notify.init(imgurshot.__appname__):
+            self._show_message("error", "unable to initialize libnotify")
+
+    def take(self, type='screen'):
+        """Take a screenshot, upload it to imgur and
+        show a notification about the results
+
+        :param type Determines screenshot type, use 'select' to take
+                    a screenshot of selected area/window (scrot --select)
+
+        :return url to the saved image if everything went successful,
+                otherwise None
+        """
+        img_url = Client.take(self, type)
+        if not img_url:
+            return
+
+        self._show_message(
+            title="Uploaded",
+            message=img_url,
+            message_type='notification',
+            is_main=True,
+            actions=[
+                NotifyAction(
+                    'copy-to-clipboard', "Copy", self.__on_notification_copytoclipboard
+                )
+            ]
+        )
+
+        return img_url
+
+    def _show_message(self, title, message="", message_type='debug',
+                      icon='dialog-information', is_main=False, actions=[]):
         """Inform user about what's going on right now.
 
         :param title A message title
@@ -133,8 +181,7 @@ class Screenshooter:
                        containing all actions to be added to the notification.
                        :note type must be 'notification'
         """
-        print("[imgur-shot]: {title}: {message}".format(**locals()))
-        if message_type is not 'debug':
+        if message_type is 'notification':
             notification = Notify.Notification.new(
                 title, message, icon
             )
@@ -166,4 +213,4 @@ class Screenshooter:
     def __on_notification_copytoclipboard(self, notification, action, user_data):
         clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
         clipboard.set_text(notification.props.body, -1)
-        self.__show_message(notification.props.body, "Copied to the clipboard")
+        Client._show_message(self, notification.props.body, "Copied to the clipboard")
