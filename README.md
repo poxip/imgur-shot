@@ -1,4 +1,8 @@
-# imgur-shot [![Build Status](https://travis-ci.org/poxip/imgur-shot.svg?branch=master)](https://travis-ci.org/poxip/imgur-shot)
+# imgur-shot [![Build Status](https://travis-ci.org/poxip/imgur-shot.svg?branch=master)](https://travis-ci.org/poxip/imgur-shot) 
+[![PyPI Version](https://img.shields.io/pypi/v/imgur-shot.svg)](https://pypi.python.org/pypi?name=imgur-shot) 
+[![PyPI License](https://img.shields.io/pypi/l/imgur-shot.svg)](https://github.com/poxip/imgur-shot/blob/master/LICENSE) 
+[![PyPI Downloads](https://img.shields.io/pypi/dm/imgur-shot.svg)](https://pypi.python.org/pypi?name=imgur-shot)
+
 A simple app made for rapid screenshots sharing.
 
 __imgur-shot__ takes a screenshot using scrot and __uploads__ it to imgur.
@@ -13,6 +17,10 @@ __imgur-shot__ takes a screenshot using scrot and __uploads__ it to imgur.
 apt-get install scrot libnotify-dev libgtk-3-dev python-gobject
 ```
 ## Installation
+```
+pip install imgur-shot
+```
+or
 ```
 ./setup.py install
 ```
