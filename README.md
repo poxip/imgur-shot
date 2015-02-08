@@ -25,11 +25,13 @@ imgur-shot --select
 apt-get install scrot libnotify-dev libgtk-3-dev python-gobject
 ```
 ## Installation
-Make sure you have __all dependencies__ (like _python-gobject__) installed.
+Make sure you have __all dependencies__ (like _python-gobject_) installed.
+
+To install the latest release using _pip_:
 ```
 pip install imgur-shot
 ```
-or
+or get the latest source and execute:
 ```
 ./setup.py install
 ```
