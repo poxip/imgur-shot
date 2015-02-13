@@ -18,7 +18,7 @@ class Client:
         :param app_id imgur application id
         """
         self.__imgur = pyimgur.Imgur(app_id)
-        self.__save_dir = '{home}/.imgur-screenshooter'.format(
+        self.__save_dir = '{home}/.imgur-shot'.format(
             home=os.environ['HOME']
         )
         # Ensure that the screenshots' directory exists
