@@ -90,7 +90,8 @@ class Client:
         """
         self._show_message("Uploading..", "")
         return self.__imgur.upload_image(
-            image_path, title="Uploaded with imgur-shot tool"
+            image_path, description="Uploaded with imgur-shot tool "
+                                    "(https://github.com/poxip/imgur-shot)"
         )
 
     def _show_message(self, title, message=""):
