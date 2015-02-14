@@ -9,7 +9,7 @@ from gi.repository import Notify
 from gi.repository import Gtk, Gdk
 
 class NotifyAction:
-    """An notify action data carrier"""
+    """A notify action data carrier"""
 
     def __init__(self, name, text, callback):
         """Init the Action field with specified action name, text and callback.
