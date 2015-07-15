@@ -1,12 +1,12 @@
 # imgur-shot
-_A simple screenshots tool written in Python for rapid screenshots sharing_
+_A simple screenshots tool written in Python, made for rapid screenshots sharing_
 
 [![Build Status](https://travis-ci.org/poxip/imgur-shot.svg?branch=master)](https://travis-ci.org/poxip/imgur-shot)
 [![PyPI Version](https://img.shields.io/pypi/v/imgur-shot.svg)](https://pypi.python.org/pypi/imgur-shot) 
 [![PyPI License](https://img.shields.io/pypi/l/imgur-shot.svg)](https://github.com/poxip/imgur-shot/blob/master/LICENSE) 
 [![PyPI Downloads](https://img.shields.io/pypi/dm/imgur-shot.svg)](https://pypi.python.org/pypi/imgur-shot)
 
-__imgur-shot__ makes sharing screeshots much simpler! Just select __whole display__, __area__ or __window__ (thanks to scrot) and wait for the link (libnotify included!):
+__imgur-shot__ makes screeshots sharing much simpler! Just select __whole display__, __area__ or __window__ (thanks to scrot) and wait for the link (libnotify included):
 ```
 imgur-shot
 ```
@@ -25,9 +25,9 @@ imgur-shot --select
 apt-get install scrot libnotify-dev libgtk-3-dev python-gobject
 ```
 ## Installation
-Make sure you have __all dependencies__ (like _python-gobject_) installed.
+Make sure you have __all the dependencies__ (like _python-gobject_) installed.
 
-To install the latest release using _pip_:
+Install the latest release using _pip_:
 ```
 pip install imgur-shot
 ```
@@ -49,9 +49,9 @@ Use __ESC__ to cancel.
 As it's a screenshooting tool, you might want to set up some key bindings.
 * __GNOME Shell__:
 
-  The easiest way is to use _gnome-control-center_. If you don't know how to add it, please follow [this simple instruction](http://askubuntu.com/a/73488/281272).
+  The easiest way is to use _gnome-control-center_. If you don't know how to add a shortcut, please follow [this simple instruction](http://askubuntu.com/a/73488/281272).
 
-  However you can do it using command line, but you will need to replace ___custom0___ and ___custom1___ with following suffix if you have any other custom shortcuts set (e.g, _custom2_, _custom3_, etc), also [this article from Ubuntu Wiki](https://wiki.ubuntu.com/Keybindings) might be useful.
+  However you can set a shortcut thgrough command line, but you need to replace ___custom0___ and ___custom1___ with following suffix if you have any other custom shortcuts set (e.g, _custom2_, _custom3_, etc). Also [this article from Ubuntu Wiki](https://wiki.ubuntu.com/Keybindings) might be useful.
   ```
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "imgur-shot"
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "imgur-shot"
@@ -62,7 +62,7 @@ As it's a screenshooting tool, you might want to set up some key bindings.
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding "<Primary>2"
   ```
 
-And then just use __CTRL+1__ to take a screenshot of whole display and __CTRL+2__ to select the area.
+After all you can press __CTRL+1__ to take a screenshot of whole display, and __CTRL+2__ for a window or an area.
   
 ## License
 The MIT License (MIT)
